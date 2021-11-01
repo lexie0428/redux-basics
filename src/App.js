@@ -1,12 +1,12 @@
 import './App.css';
 import { useEffect } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import { addCashAction, getCashAction } from './store/cashReducer';
+import { asyncAddCashAction, asyncGetCashAction } from './store/cashReducer';
 import {
   addCustomerAction,
+  fetchCustomersAction,
   removeCustomerAction,
 } from './store/customerReducer';
-import { fetchCustomers } from './asyncActions.js/customer';
 
 function App() {
   const dispatch = useDispatch();
@@ -14,15 +14,15 @@ function App() {
   const customers = useSelector((state) => state.customers.customers);
 
   useEffect(() => {
-    dispatch(fetchCustomers());
+    dispatch(fetchCustomersAction());
   }, []);
 
-  const addCash = (cash) => {
-    dispatch(addCashAction(cash));
+  const addCash = () => {
+    dispatch(asyncAddCashAction());
   };
 
-  const getCash = (cash) => {
-    dispatch(getCashAction(cash));
+  const getCash = () => {
+    dispatch(asyncGetCashAction());
   };
 
   const addCustomer = (name) => {
@@ -37,10 +37,10 @@ function App() {
     <div className="App">
       <div style={{ display: 'flex' }}>
         <div>{cash}</div>
-        <button onClick={() => addCash(Number(prompt()))}>
+        <button onClick={addCash}>
           Пополнить счет
         </button>
-        <button onClick={() => getCash(Number(prompt()))}>
+        <button onClick={getCash}>
           Снять со счета
         </button>
         <button onClick={() => addCustomer(prompt())}>Добавить клиента</button>
